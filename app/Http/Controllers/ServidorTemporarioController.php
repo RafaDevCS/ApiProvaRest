@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateServidorTemporarioRequest;
 use App\Models\ServidorTemporario;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ServidorTemporarioController extends Controller
 {
@@ -43,7 +44,7 @@ class ServidorTemporarioController extends Controller
     //public function show(ServidorTemporario $servidorTemporario)
     public function show()
     {
-        $serT = ServidorTemporario::get()->toJson(JSON_PRETTY_PRINT);
+        $serT = DB::table('servidor_temporario')->paginate(15);
         return response($serT, 200);
 
     }
