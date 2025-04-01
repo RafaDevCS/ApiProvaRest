@@ -45,7 +45,8 @@ class ServidorTemporarioController extends Controller
     public function show()
     {
         $serT = DB::table('servidor_temporario')->paginate(15);
-        return response($serT, 200);
+        
+        return response($phone, 200);
 
     }
 
