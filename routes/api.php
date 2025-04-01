@@ -11,5 +11,9 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
 Route::post('/pessoa/novo',[PessoaController::class,'store'])
   ->middleware('auth:sanctum');
+
+Route::get('/servidorTemporario/ver',[ServidorTemporarioController::class,'show'])
+  ->middleware('auth:sanctum');
+
 Route::post('/servidor/temporario/novo',[ServidorTemporarioController::class,'store'])
   ->middleware('auth:sanctum');

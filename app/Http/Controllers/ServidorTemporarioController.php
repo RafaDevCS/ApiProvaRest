@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreServidorTemporarioRequest;
 use App\Http\Requests\UpdateServidorTemporarioRequest;
 use App\Models\ServidorTemporario;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ServidorTemporarioController extends Controller
 {
@@ -29,18 +31,21 @@ class ServidorTemporarioController extends Controller
      */
     public function store(StoreServidorTemporarioRequest $request)
     {
-        $serT = ServidorTemporario::create([
+        /*$serT = ServidorTemporario::create(
             'st_data_admissao'$request->admissao,
             'st_data_demissao'$request->demissao,
-        ]);
+        );*/
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ServidorTemporario $servidorTemporario)
+    //public function show(ServidorTemporario $servidorTemporario)
+    public function show()
     {
-        //
+        $serT = ServidorTemporario::get()->toJson(JSON_PRETTY_PRINT);
+        return response($serT, 200);
+
     }
 
     /**

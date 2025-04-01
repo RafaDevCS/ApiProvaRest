@@ -41,6 +41,9 @@ class PessoaController extends Controller
             'pes_mae' => $request->pes_mae,
             'pes_pai' => $request->pes_pai,
         ]);
+        return response()->json([
+        "message" => "Pessoa criada com sucesso"
+    ], 201);
     }
 
     /**

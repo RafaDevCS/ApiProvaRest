@@ -14,6 +14,11 @@ class ServidorTemporario extends Model
     ];
     protected $table = 'servidor_temporario';
     //protected $primaryKey = 'pes_id';
+
+    public function pessoa(): HasOne
+    {
+        return $this->hasOne(Pessoa::class);
+    }
     /** @use HasFactory<\Database\Factories\ServidorTemporarioFactory> */
     use HasFactory;
 }
