@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('cid_id')->primary();
             $table->string('cid_nome', length: 200);
             $table->string('cid_uf', length: 2);
+            $table->timestamps();
         });
     }
 

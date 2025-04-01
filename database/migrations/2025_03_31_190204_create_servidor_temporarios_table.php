@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('servidor_temporarios', function (Blueprint $table) {
-            $table->id();
+        Schema::create('servidor_temporario', function (Blueprint $table) {
+            $table->foreignId('pes_id');
+            $table->string('st_data_admissao', length: 20);
+            $table->string('st_data_demissao', length: 20);
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('servidor_temporarios');
+        Schema::dropIfExists('servidor_temporario');
     }
 };

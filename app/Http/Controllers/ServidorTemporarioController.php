@@ -29,7 +29,10 @@ class ServidorTemporarioController extends Controller
      */
     public function store(StoreServidorTemporarioRequest $request)
     {
-        //
+        $serT = ServidorTemporario::create([
+            'st_data_admissao'$request->admissao,
+            'st_data_demissao'$request->demissao,
+        ]);
     }
 
     /**

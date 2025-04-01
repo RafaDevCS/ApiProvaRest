@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('servidor_efetivos', function (Blueprint $table) {
+        Schema::create('servidor_efetivo', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pes_id');
+            $table->string('se_matricula', length: 20);
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('servidor_efetivos');
+        Schema::dropIfExists('servidor_efetivo');
     }
 };

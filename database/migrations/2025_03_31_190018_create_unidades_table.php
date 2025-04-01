@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('uni_id')->primary();
             $table->string('uni_nome', length: 200);
             $table->string('uni_sigla', length: 20);
+            $table->timestamps();
         });
     }
 

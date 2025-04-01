@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('end_logradouro', length: 200);
             $table->integer('end_numero');
             $table->string('end_bairro', length: 100);
+            $table->timestamps();
             //$table->foreign('cid_id')->references('cid_id')->on('cidade');
         });
     }
