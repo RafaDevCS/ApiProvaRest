@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('foto_pessoa', function (Blueprint $table) {
             $table->id('ft_id')->primary();
-            $table->foreignId('pes_id');
+            $table->unsignedBigInteger('pes_id');
             $table->string('ft_data', length: 50);
             $table->string('ft_bucket', length: 50);
             $table->string('ft_hash', length: 50);
+            $table->foreign('pes_id')->references('pes_id')->on('pessoa');
         });
     }
 

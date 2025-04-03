@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('servidor_efetivo', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pes_id');
+            //$table->foreignId('pes_id');
             $table->string('se_matricula', length: 20);
             $table->timestamps();
         });

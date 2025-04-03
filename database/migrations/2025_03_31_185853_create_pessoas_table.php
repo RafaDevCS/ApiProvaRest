@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pessoa', function (Blueprint $table) {
             $table->id('pes_id')->primary();
             $table->string('pes_nome', length: 200);
-            $table->string('pes_data_nascimento', length: 20);
+            $table->date('pes_data_nascimento');
             $table->string('pes_sexo', length: 9);
             $table->string('pes_mae', length: 200);
             $table->string('pes_pai', length: 200);

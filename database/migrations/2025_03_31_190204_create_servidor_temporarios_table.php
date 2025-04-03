@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('servidor_temporario', function (Blueprint $table) {
-            $table->foreignId('pes_id');
-            $table->string('st_data_admissao', length: 20);
-            $table->string('st_data_demissao', length: 20);
+            //$table->foreignId('pes_id');
+            $table->date('st_data_admissao');
+            $table->date('st_data_demissao');
             $table->timestamps();
         });
     }

@@ -13,12 +13,12 @@ class Endereco extends Model
         'end_numero',
         'end_bairro',
     ];
-    protected $table = 'pessoa';
-    protected $primaryKey = 'pes_id';
+    protected $table = 'endereco';
+    protected $primaryKey = 'end_id';
 
     public function cidade(): HasOne
     {
-        return $this->hasOne(Cidade::class);
+        return $this->hasOne(Cidade::class, "cid_id");
     }
     /** @use HasFactory<\Database\Factories\EnderecoFactory> */
     use HasFactory;

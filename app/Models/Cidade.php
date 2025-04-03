@@ -12,8 +12,8 @@ class Cidade extends Model
         'cid_uf',
         
     ];
-    protected $table = 'unidade';
-    protected $primaryKey = 'uni_id';
+    protected $table = 'cidade';
+    protected $primaryKey = 'cid_id';
     /** @use HasFactory<\Database\Factories\CidadeFactory> */
     use HasFactory;
 }
