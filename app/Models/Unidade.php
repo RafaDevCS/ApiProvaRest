@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Unidade extends Model
 {
     protected $fillable = [
-        'uni_nome',
-        'uni_sigla',
+        'unid_nome',
+        'unid_sigla',
         
     ];
     protected $table = 'unidade';
-    protected $primaryKey = 'uni_id';
+    protected $primaryKey = 'unid_id';
     /** @use HasFactory<\Database\Factories\UnidadeFactory> */
     use HasFactory;
 }

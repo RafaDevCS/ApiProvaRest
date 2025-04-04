@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('lotacao', function (Blueprint $table) {
             $table->id('lot_id');
-            //$table->foreignId('pes_id');
-            //$table->foreignId('uni_id');
-            $table->string('lt_data_lotacao', length: 20);
-            $table->string('lt_data_remocao', length: 20);
-            $table->string('lt_portaria', length: 200);
+            $table->unsignedBigInteger('pes_id');
+            $table->unsignedBigInteger('unid_id');
+            $table->date('lot_data_lotacao');
+            $table->date('lot_data_remocao');
+            $table->string('lot_portaria', length: 200);
             $table->timestamps();
+            $table->foreign('pes_id')->references('pes_id')->on('pessoa');
+            $table->foreign('unid_id')->references('unid_id')->on('unidade');
         });
     }
 

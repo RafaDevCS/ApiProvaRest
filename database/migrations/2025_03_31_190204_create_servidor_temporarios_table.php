@@ -12,10 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('servidor_temporario', function (Blueprint $table) {
-            //$table->foreignId('pes_id');
+            $table->unsignedBigInteger('pes_id');
             $table->date('st_data_admissao');
             $table->date('st_data_demissao');
             $table->timestamps();
+            $table->foreign('pes_id')->references('pes_id')->on('pessoa');
         });
     }
 

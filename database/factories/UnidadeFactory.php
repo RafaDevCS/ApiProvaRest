@@ -17,7 +17,8 @@ class UnidadeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'unid_nome'=> fake()->name(),
+            'unid_sigla'=> fake()->lexify('????????????????????'),
         ];
     }
 }

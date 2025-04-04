@@ -19,7 +19,7 @@ class PessoaFactory extends Factory
         return [
             'pes_nome' => fake()->name(),
             'pes_data_nascimento' => fake()->date(),
-            'pes_sexo' => fake()->name(),
+            'pes_sexo' => fake()->lexify('?????????'),
             'pes_mae' => fake()->name(),
             'pes_pai' => fake()->name(),
         ];
