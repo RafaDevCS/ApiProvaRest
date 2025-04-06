@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('pessoa_enderecos', function (Blueprint $table) {
             $table->unsignedBigInteger('pes_id');
             $table->unsignedBigInteger('end_id');
-            $table->timestamps();
             $table->foreign('pes_id')->references('pes_id')->on('pessoa');
             $table->foreign('end_id')->references('end_id')->on('endereco');
+            $table->timestamps();
         });
     }
 

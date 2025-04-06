@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\HasApiTokens;
+use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 
 
 class PessoaController extends Controller
@@ -20,7 +22,9 @@ class PessoaController extends Controller
      */
     public function index()
     {
-        $pessoa = DB::table('pessoa')->paginate(15);
+        $pessoa = DB::table('pessoa')
+            ->select('pessoa.pes_nome', 'pessoa.pes_data_nascimento', 'pessoa.pes_sexo', 'pessoa.pes_mae', 'pessoa.pes_pai')
+            ->paginate(15);
         return response()->json([
             'Pessoas' => $pessoa
         ]);
@@ -31,11 +35,12 @@ class PessoaController extends Controller
         try {
             $validatePessoa = Validator::make($request->all(), 
             [
-                'pes_nome' => 'required',
-                'pes_data_nascimento' => 'required|date',
+                'pes_nome' => 'required|max:200',
+                'pes_data_nascimento' => ['required', 'date', Rule::date()->before(today()->subYears(18))
+                ],
                 'pes_sexo' => 'required|max:9',
-                'pes_mae' => 'required',
-                'pes_pai' => 'required'
+                'pes_mae' => 'required|max:200',
+                'pes_pai' => 'required|max:200'
             ]);
 
             if($validatePessoa->fails()){
@@ -48,7 +53,7 @@ class PessoaController extends Controller
 
             $pessoa = Pessoa::create([
             'pes_nome' => $request->pes_nome,
-            'pes_data_nascimento' => $request->pes_data_nascimento,
+            'pes_data_nascimento' => Carbon::parse($request->pes_data_nascimento)->toDateString(),
             'pes_sexo' => $request->pes_sexo,
             'pes_mae' => $request->pes_mae,
             'pes_pai' => $request->pes_pai,
@@ -83,11 +88,12 @@ class PessoaController extends Controller
         try {
             $validatePessoa = Validator::make($request->all(), 
             [
-                'pes_nome' => 'required',
-                'pes_data_nascimento' => 'required|date',
+                'pes_nome' => 'required|max:200',
+                'pes_data_nascimento' => ['required', 'date', Rule::date()->before(today()->subYears(18))
+                ],
                 'pes_sexo' => 'required|max:9',
-                'pes_mae' => 'required',
-                'pes_pai' => 'required'
+                'pes_mae' => 'required|max:200',
+                'pes_pai' => 'required|max:200'
             ]);
 
             if($validatePessoa->fails()){
@@ -101,7 +107,7 @@ class PessoaController extends Controller
             $pessoa = Pessoa::findOrFail($id); 
             $pessoa -> update([
             'pes_nome' => $request->pes_nome,
-            'pes_data_nascimento' => $request->pes_data_nascimento,
+            'pes_data_nascimento' => Carbon::parse($request->pes_data_nascimento)->toDateString(),
             'pes_sexo' => $request->pes_sexo,
             'pes_mae' => $request->pes_mae,
             'pes_pai' => $request->pes_pai,

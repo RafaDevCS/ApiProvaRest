@@ -20,7 +20,8 @@ class EnderecoController extends Controller
     {
         $endereco = DB::table('endereco')
             ->join('cidade', 'cidade.cid_id', '=', 'endereco.cid_id')
-            ->select('endereco.*', 'cidade.*')
+            ->select('endereco.end_tipo_logradouro',
+                        'endereco.end_logradouro', 'endereco.end_numero', 'endereco.end_bairro','cidade.cid_nome', 'cidade.cid_uf')
             ->paginate(10);
         return response()->json([
             'Endereços' => $endereco

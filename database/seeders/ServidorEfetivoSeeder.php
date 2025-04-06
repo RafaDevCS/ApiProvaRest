@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\ServidorEfetivo;
 
 class ServidorEfetivoSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class ServidorEfetivoSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        ServidorEfetivo::factory()->count(1)->create();
     }
 }

@@ -2,75 +2,130 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreServidorTemporarioRequest;
-use App\Http\Requests\UpdateServidorTemporarioRequest;
 use App\Models\ServidorTemporario;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\HasApiTokens;
+
 
 class ServidorTemporarioController extends Controller
 {
+    use HasApiTokens;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $servidores = DB::table('servidor_temporario')
+            ->join('pessoa', 'pessoa.pes_id', '=', 'servidor_temporario.pes_id')
+            ->select('pessoa.pes_nome', 'pessoa.pes_data_nascimento', 'servidor_temporario.st_data_admissao','servidor_temporario.st_data_demissao', )
+            ->paginate(10);
+        return response()->json([
+            'Servidores' => $servidores
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
-    }
+        try {
+            $validateEndereco = Validator::make($request->all(), 
+            [
+                'pes_id' => 'required|max:50|String',
+                'st_data_admissao' => 'required|max:50|String',
+                'st_data_demissao' => 'required|max:50|String',
+                'end_tipo_logradouro' => 'required|max:50|String',
+                'end_logradouro' => 'required|max:200|String',
+                'end_numero' => 'required|Integer',
+                'end_bairro'=> 'required|max:100|String',
+                'cid_id' => 'required|exists:cidade,cid_id',
+            ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreServidorTemporarioRequest $request)
-    {
-        /*$serT = ServidorTemporario::create(
-            'st_data_admissao'$request->admissao,
-            'st_data_demissao'$request->demissao,
-        );*/
+            if($validateEndereco->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Formato dos dados incorreto',
+                    'errors' => $validateEndereco->errors()
+                ], 401);
+            }
+
+            $endereco = Endereco::create([
+                'end_tipo_logradouro' => $request->end_tipo_logradouro,
+                'end_logradouro' => $request->end_logradouro,
+                'end_numero' => $request->end_numero,
+                'end_bairro'=> $request->end_bairro,
+                'cid_id' => $request->cid_id
+            ]);
+
+            return response()->json([
+                "message" => "Endereco criada com sucesso"
+            ], 201);
+
+        }catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    //public function show(ServidorTemporario $servidorTemporario)
-    public function show()
+    public function show($id)
     {
-        $serT = DB::table('servidor_temporario')->paginate(15);
+        $endereco = DB::table('endereco')
+            ->join('cidade', 'cidade.cid_id', '=', 'endereco.cid_id')
+            ->select('endereco.end_tipo_logradouro',
+                        'endereco.end_logradouro', 'endereco.end_numero', 'endereco.end_bairro','cidade.cid_nome', 'cidade.cid_uf')
+            ->where('end_id', $id)->first();
+        //$end = Endereco::findOrFail($id)->with('cidade');
+        return response()->json([
+            "Endereco" => $endereco
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
         
-        return response($phone, 200);
+        try {
+            $validateEndereco = Validator::make($request->all(), 
+            [
+                'end_tipo_logradouro' => 'required|max:50|String',
+                'end_logradouro' => 'required|max:200|String',
+                'end_numero' => 'required|Integer',
+                'end_bairro'=> 'required|max:100|String',
+                'cid_id' => 'required|exists:cidade,cid_id',
+            ]);
 
-    }
+            if($validateEndereco->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Formato dos dados incorreto',
+                    'errors' => $validateEndereco->errors()
+                ], 401);
+            }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ServidorTemporario $servidorTemporario)
-    {
-        //
-    }
+            $endereco = Endereco::findOrFail($id);
+            $endereco -> update([
+                'end_tipo_logradouro' => $request->end_tipo_logradouro,
+                'end_logradouro' => $request->end_logradouro,
+                'end_numero' => $request->end_numero,
+                'end_bairro'=> $request->end_bairro,
+                'cid_id' => $request->cid_id
+            ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateServidorTemporarioRequest $request, ServidorTemporario $servidorTemporario)
-    {
-        //
-    }
+            return response()->json([
+                "message" => "Endereco atualizado com sucesso"
+            ], 201);
+            
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ServidorTemporario $servidorTemporario)
-    {
-        //
+        }catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 }

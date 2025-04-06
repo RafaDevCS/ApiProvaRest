@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Lotacao;
 
 class LotacaoSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class LotacaoSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Lotacao::factory()->count(1)->create();
     }
 }

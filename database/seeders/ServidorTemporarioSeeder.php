@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\ServidorTemporario;
 
 class ServidorTemporarioSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class ServidorTemporarioSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        ServidorTemporario::factory()->count(10)->create();
     }
 }

@@ -17,7 +17,9 @@ class ServidorTemporarioFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'pes_id' => 1,
+            'st_data_admissao' => fake()->date(),
+            'st_data_demissao' => fake()->date(),
         ];
     }
 }

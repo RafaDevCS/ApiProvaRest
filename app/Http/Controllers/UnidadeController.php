@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Unidade;
+use App\Models\UnidadeEndereco;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -57,6 +58,7 @@ class UnidadeController extends Controller
             ], 500);
         }
     }
+    
 
     /**
      * Display the specified resource.
@@ -104,5 +106,14 @@ class UnidadeController extends Controller
                 'message' => $th->getMessage()
             ], 500);
         }    
+    }
+    public function deleta($id)
+    {
+        $lotacao = DB::table('lotacao')
+            ->where('lot_id', $id)
+            ->delete();
+        return response()->json([
+            'Quantidade de Lotação deletada' => $lotacao
+        ]); 
     }
 }

@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('servidor_efetivo', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('pes_id');
             $table->string('se_matricula', length: 20);
             $table->timestamps();

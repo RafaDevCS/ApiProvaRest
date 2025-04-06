@@ -17,7 +17,8 @@ class ServidorEfetivoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'pes_id' => 1,
+            'se_matricula'=> fake()->lexify('????????????????????'),
         ];
     }
 }

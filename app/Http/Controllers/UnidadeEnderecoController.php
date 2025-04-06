@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ServidorEfetivo;
 use App\Models\Unidade;
 use App\Models\Endereco;
 use App\Models\UnidadeEndereco;
@@ -13,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\HasApiTokens;
 
 
-class ServidorEfetivoController extends Controller
+class UnidadeEnderecoController extends Controller
 {
     use HasApiTokens;
     /**
@@ -21,16 +20,15 @@ class ServidorEfetivoController extends Controller
      */
     public function index()
     {
-        $servidorEfetivo = DB::table('pessoa')
-            ->join('servidor_efetivo', 'servidor_efetivo.pes_id', '=', 'pessoa.pes_id')
-            ->join('lotacao', 'lotacao.pes_id', '=', 'pessoa.pes_id' )
-            //->join('unidade', 'unidade.unid_id', '=', 'lotacao.unid_id' )
-            ->select('pessoa.*', 'servidor_efetivo.*', 'lotacao.*')//, 'unidade.*')
-                /*'endereco.end_tipo_logradouro',
-                      'endereco.end_logradouro', 'endereco.end_numero', 'endereco.end_bairro','cidade.cid_nome', 'cidade.cid_uf', 'unidade.unid_nome', 'unidade.unid_sigla')*/
+        $unidadeEnd = DB::table('unidade_endereco')
+            ->join('unidade', 'unidade.unid_id', '=', 'unidade_endereco.unid_id')
+            ->join('endereco', 'endereco.end_id', '=', 'unidade_endereco.end_id' )
+            ->join('cidade', 'cidade.cid_id', '=', 'endereco.end_id' )
+            ->select('endereco.end_tipo_logradouro',
+                      'endereco.end_logradouro', 'endereco.end_numero', 'endereco.end_bairro','cidade.cid_nome', 'cidade.cid_uf', 'unidade.unid_nome', 'unidade.unid_sigla')
             ->paginate(10);
         return response()->json([
-            'Servidores Efetivo' => $servidorEfetivo
+            'Unidades' => $unidadeEnd
         ]);
     }
 

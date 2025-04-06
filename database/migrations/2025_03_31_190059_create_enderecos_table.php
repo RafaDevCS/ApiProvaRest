@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('end_numero');
             $table->string('end_bairro', length: 100);
             $table->unsignedBigInteger('cid_id');
-            $table->timestamps();
             $table->foreign('cid_id')->references('cid_id')->on('cidade');
+            $table->timestamps();
         });
     }
 

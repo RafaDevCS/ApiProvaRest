@@ -11,7 +11,7 @@ class ServidorEfetivo extends Model
         'se_matricula',
     ];
     protected $table = 'servidor_efetivo';
-    //protected $primaryKey = 'pes_id';
+    protected $primaryKey = 'pes_id';
 
     public function pessoa(): HasOne
     {

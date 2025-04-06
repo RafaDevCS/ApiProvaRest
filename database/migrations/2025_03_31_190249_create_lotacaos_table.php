@@ -16,11 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('pes_id');
             $table->unsignedBigInteger('unid_id');
             $table->date('lot_data_lotacao');
-            $table->date('lot_data_remocao');
+            $table->date('lot_data_remocao')->nullable();
             $table->string('lot_portaria', length: 200);
-            $table->timestamps();
             $table->foreign('pes_id')->references('pes_id')->on('pessoa');
             $table->foreign('unid_id')->references('unid_id')->on('unidade');
+            $table->timestamps();
         });
     }
 

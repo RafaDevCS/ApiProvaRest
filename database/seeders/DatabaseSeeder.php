@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             EnderecoSeeder::class,
+            ServidorTemporarioSeeder::class,
+            LotacaoSeeder::class,
+            ServidorEfetivoSeeder::class,
         ]);
 
         /*User::factory()->create([

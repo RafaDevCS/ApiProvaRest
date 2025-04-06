@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('servidor_temporario', function (Blueprint $table) {
-            $table->unsignedBigInteger('pes_id');
-            $table->date('st_data_admissao');
-            $table->date('st_data_demissao')->nullable();
+        Schema::create('unidade_endereco', function (Blueprint $table) {
+            $table->unsignedBigInteger('unid_id');
+            $table->unsignedBigInteger('end_id');
+            $table->foreign('unid_id')->references('unid_id')->on('unidade');
+            $table->foreign('end_id')->references('end_id')->on('endereco');
             $table->timestamps();
-            $table->foreign('pes_id')->references('pes_id')->on('pessoa');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('servidor_temporario');
+        Schema::dropIfExists('unidade_endereco');
     }
 };
