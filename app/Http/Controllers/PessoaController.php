@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePessoaRequest;
-use App\Http\Requests\UpdatePessoaRequest;
+//use App\Http\Requests\StorePessoaRequest;
+//use App\Http\Requests\UpdatePessoaRequest;
 use App\Models\Pessoa;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\HasApiTokens;
+
 
 class PessoaController extends Controller
 {
@@ -17,64 +20,102 @@ class PessoaController extends Controller
      */
     public function index()
     {
-        //
+        $pessoa = DB::table('pessoa')->paginate(15);
+        return response()->json([
+            'Pessoas' => $pessoa
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    //public function store(StorePessoaRequest $request)
     public function store(Request $request)
     {
-        $pessoa = Pessoa::create([
+        try {
+            $validatePessoa = Validator::make($request->all(), 
+            [
+                'pes_nome' => 'required',
+                'pes_data_nascimento' => 'required|date',
+                'pes_sexo' => 'required|max:9',
+                'pes_mae' => 'required',
+                'pes_pai' => 'required'
+            ]);
+
+            if($validatePessoa->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Formato dos dados incorreto',
+                    'errors' => $validatePessoa->errors()
+                ], 401);
+            }
+
+            $pessoa = Pessoa::create([
             'pes_nome' => $request->pes_nome,
             'pes_data_nascimento' => $request->pes_data_nascimento,
             'pes_sexo' => $request->pes_sexo,
             'pes_mae' => $request->pes_mae,
             'pes_pai' => $request->pes_pai,
-        ]);
-        return response()->json([
-        "message" => "Pessoa criada com sucesso"
-    ], 201);
+            ]);
+            return response()->json([
+                "message" => "Pessoa criada com sucesso"
+            ], 201);
+
+        }catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Pessoa $pessoa)
+    public function show($id)
     {
-        //
+        $pessoa = DB::table('pessoa')->where('pes_id', $id)->first();
+        
+        return response()->json([
+            "Pessoa" => $pessoa
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Pessoa $pessoa)
+    public function update(Request $request, $id)
     {
-        //
-    }
+        
+        try {
+            $validatePessoa = Validator::make($request->all(), 
+            [
+                'pes_nome' => 'required',
+                'pes_data_nascimento' => 'required|date',
+                'pes_sexo' => 'required|max:9',
+                'pes_mae' => 'required',
+                'pes_pai' => 'required'
+            ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePessoaRequest $request, Pessoa $pessoa)
-    {
-        //
-    }
+            if($validatePessoa->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Formato dos dados incorreto',
+                    'errors' => $validatePessoa->errors()
+                ], 401);
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pessoa $pessoa)
-    {
-        //
+            $pessoa = Pessoa::findOrFail($id); 
+            $pessoa -> update([
+            'pes_nome' => $request->pes_nome,
+            'pes_data_nascimento' => $request->pes_data_nascimento,
+            'pes_sexo' => $request->pes_sexo,
+            'pes_mae' => $request->pes_mae,
+            'pes_pai' => $request->pes_pai,
+            ]); 
+
+            return response()->json([
+                "message" => "Pessoa alterada com sucesso"
+            ], 201);
+
+        }catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }    
     }
 }

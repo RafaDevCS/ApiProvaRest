@@ -12,6 +12,7 @@ class Endereco extends Model
         'end_logradouro',
         'end_numero',
         'end_bairro',
+        'cid_id',
     ];
     protected $table = 'endereco';
     protected $primaryKey = 'end_id';

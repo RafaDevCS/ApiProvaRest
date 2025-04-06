@@ -17,11 +17,18 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PessoaSeeder::class,
             UnidadeSeeder::class,
+            CidadeSeeder::class,
+
         ]);
 
-        User::factory()->create([
+        $this->call([
+            EnderecoSeeder::class,
+        ]);
+
+        /*User::factory()->create([
             'name' => 'Rafael Morais',
             'email' => 'rafael@mail.com',
-        ]);
+            'password' => '1234',
+        ]);*/
     }
 }

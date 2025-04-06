@@ -17,7 +17,8 @@ class CidadeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'cid_nome' => fake()->name(),
+            'cid_uf' => fake()->lexify('??'),
         ];
     }
 }

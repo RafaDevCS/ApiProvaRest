@@ -17,7 +17,11 @@ class EnderecoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'end_tipo_logradouro' => fake()->name(),
+            'end_logradouro' => fake()->name(),
+            'end_numero' => fake()->randomNumber(5),
+            'end_bairro' => fake()->name(),
+            'cid_id' => 5,        
         ];
     }
 }

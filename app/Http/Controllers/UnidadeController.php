@@ -2,65 +2,107 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUnidadeRequest;
-use App\Http\Requests\UpdateUnidadeRequest;
 use App\Models\Unidade;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\HasApiTokens;
+
 
 class UnidadeController extends Controller
 {
+    use HasApiTokens;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $unidade = DB::table('unidade')->paginate(10);
+        return response()->json([
+            'Unidades' => $unidade
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
-    }
+        try {
+            $validateUnidade = Validator::make($request->all(), 
+            [
+                'unid_nome' => 'required',
+                'unid_sigla' => 'required|max:20'
+            ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreUnidadeRequest $request)
-    {
-        //
+            if($validateUnidade->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Formato dos dados incorreto',
+                    'errors' => $validateUnidades->errors()
+                ], 401);
+            }
+
+            $unidade = Unidade::create([
+                'unid_nome' => $request->unid_nome,
+                'unid_sigla' => $request->unid_sigla,
+            ]);
+
+            return response()->json([
+                "message" => "Unidade criada com sucesso"
+            ], 201);
+
+        }catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Unidade $unidade)
+    public function show($id)
     {
-        //
+        $unidade = DB::table('unidade')->where('unid_id', $id)->first();
+        
+        return response()->json([
+            "Unidade" => $unidade
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Unidade $unidade)
+    public function update(Request $request, $id)
     {
-        //
-    }
+        
+        try {
+            $validateUnidade = Validator::make($request->all(), 
+            [
+                'unid_nome' => 'required',
+                'unid_sigla' => 'required|max:20'
+            ]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateUnidadeRequest $request, Unidade $unidade)
-    {
-        //
-    }
+            if($validateUnidade->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Formato dos dados incorreto',
+                    'errors' => $validateUnidades->errors()
+                ], 401);
+            }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Unidade $unidade)
-    {
-        //
+            $unidade = Unidade::findOrFail($id);
+            $unidade -> update([
+                'unid_nome' => $request->unid_nome,
+                'unid_sigla' => $request->unid_sigla,
+            ]);
+
+            return response()->json([
+                "message" => "Unidade atualizada com sucesso"
+            ], 201);
+
+        }catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }    
     }
 }
