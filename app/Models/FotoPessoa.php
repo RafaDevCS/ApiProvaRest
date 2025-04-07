@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FotoPessoa extends Model
 {
     protected $fillable = [
+        'pes_id',
         'ft_data',
         'ft_bucket',
         'ft_hash',

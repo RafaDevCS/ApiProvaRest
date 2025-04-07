@@ -17,7 +17,8 @@ class PessoaEnderecoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'pes_id' => 1,
+            'end_id' => 1,
         ];
     }
 }

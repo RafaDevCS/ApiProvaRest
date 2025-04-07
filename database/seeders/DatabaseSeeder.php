@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ServidorTemporarioSeeder::class,
             LotacaoSeeder::class,
             ServidorEfetivoSeeder::class,
+            PessoaEnderecoSeeder::class,
         ]);
 
         /*User::factory()->create([

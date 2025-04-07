@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('ft_bucket', length: 50);
             $table->string('ft_hash', length: 50);
             $table->foreign('pes_id')->references('pes_id')->on('pessoa');
+            $table->timestamps();
         });
     }
 

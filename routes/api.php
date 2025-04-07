@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\PessoaController;
 use App\Http\Controllers\UnidadeController;
 use App\Http\Controllers\UnidadeEnderecoController;
+use App\Http\Controllers\PessoaEnderecoController;
 use App\Http\Controllers\CidadeController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\LotacaoController;
@@ -39,6 +40,18 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::get('/unidadeEnd/',[UnidadeEnderecoController::class,'index'])->name('todos');
   Route::put('/unidadeEnd/atualiza/{id}',[UnidadeEnderecoController::class,'update'])->name('altera');
   Route::get('/unidadeEnd/deleta/{id}',[UnidadeEnderecoController::class,'deleta'])->name('apaga');
+
+  Route::post('/pessoaEnd/novo',[PessoaEnderecoController::class,'store'])->name('cria');
+  Route::get('/pessoaEnd/{id}',[PessoaEnderecoController::class,'show'])->name('busca');
+  Route::get('/pessoaEnd/',[PessoaEnderecoController::class,'index'])->name('todos');
+  Route::put('/pessoaEnd/atualiza/{id}',[PessoaEnderecoController::class,'update'])->name('altera');
+  Route::get('/pessoaEnd/deleta/{id}',[PessoaEnderecoController::class,'deleta'])->name('apaga');
+
+  Route::post('/fotoPessoa/novo',[FotoPessoaEnderecoController::class,'store'])->name('cria');
+  Route::get('/fotoPessoa/{id}',[FotoPessoaEnderecoController::class,'show'])->name('busca');
+  Route::get('/fotoPessoa/',[FotoPessoaEnderecoController::class,'index'])->name('todos');
+  Route::put('/fotoPessoa/atualiza/{id}',[FotoPessoaEnderecoController::class,'update'])->name('altera');
+  Route::get('/fotoPessoa/deleta/{id}',[FotoPessoaEnderecoController::class,'deleta'])->name('apaga');
 
   Route::post('/lotacao/novo',[LotacaoController::class,'store'])->name('cria');
   Route::get('/lotacao/{id}',[LotacaoController::class,'show'])->name('busca');

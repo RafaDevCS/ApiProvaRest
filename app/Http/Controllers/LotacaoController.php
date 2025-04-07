@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 
 
 class LotacaoController extends Controller
@@ -37,10 +38,10 @@ class LotacaoController extends Controller
                 'pes_id' => 'required|exists:pessoa,pes_id',
                 'unid_id' => 'required|exists:unidade,unid_id',
                 'lot_data_lotacao' => ['required', 'date', 
-                    Rule::date()->beforeOrEqual(today()->subDays(7)),
+                    Rule::date()->beforeOrEqual(today()),
                 ],
                 'lot_data_remocao' => ['required', 'date', 
-                    Rule::date()->after(today()->subDays(7)),
+                    Rule::date()->after(today()),
                 ],
                 'lot_portaria' => 'required|max:100|String',
             ]);
@@ -57,8 +58,8 @@ class LotacaoController extends Controller
             $lotacao = Lotacao::create([
                 'pes_id' => $request->pes_id,
                 'unid_id' => $request->unid_id,
-                'lot_data_lotacao' => $request->lot_data_lotacao,
-                'lot_data_remocao'=> $request->lot_data_remocao,
+                'lot_data_lotacao' => Carbon::parse($request->lot_data_lotacao)->toDateString(),
+                'lot_data_remocao'=> Carbon::parse($request->lot_data_remocao)->toDateString(),
                 'lot_portaria' => $request->lot_portaria
             ]);
 
@@ -118,8 +119,8 @@ class LotacaoController extends Controller
             $lotacao -> update([
                 'pes_id' => $request->pes_id,
                 'unid_id' => $request->unid_id,
-                'lot_data_lotacao' => $request->lot_data_lotacao,
-                'lot_data_remocao'=> $request->lot_data_remocao,
+                'lot_data_lotacao' => Carbon::parse($request->lot_data_lotacao)->toDateString(),
+                'lot_data_remocao'=> Carbon::parse($request->lot_data_remocao)->toDateString(),
                 'lot_portaria' => $request->lot_portaria
             ]);
 
