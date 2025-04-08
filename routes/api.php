@@ -60,9 +60,11 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::put('/lotacao/atualiza/{id}',[LotacaoController::class,'update'])->name('altera');
   Route::post('/servidorEfetivo/novo',[ServidorEfetivoController::class,'store'])->name('cria');
   Route::get('/servidorEfetivo/{id}',[ServidorEfetivoController::class,'show'])->name('busca');
+  Route::get('/servidorEfetivo/buscarPorUnidade/{id}',[ServidorEfetivoController::class,'buscarPorUnidade'])->name('buscaUnidade');
+  Route::get('/servidorEfetivo/enderecoFuncional/{id}',[ServidorEfetivoController::class,'enderecoFuncional'])->name('enderecoFunc');
   Route::get('/servidorEfetivo/deleta/{id}',[ServidorEfetivoController::class,'deleta'])->name('apaga');
   Route::get('/servidorEfetivo/',[ServidorEfetivoController::class,'index'])->name('todos');
-  Route::put('/lotacao/atualiza/{id}',[ServidorEfetivoController::class,'update'])->name('altera');
+  Route::put('/servidorEfetivo/atualiza/{id}',[ServidorEfetivoController::class,'update'])->name('altera');
   Route::post('/cidade/novo',[CidadeController::class,'store'])->name('cria');
   Route::get('/cidade/{id}',[CidadeController::class,'show'])->name('busca');
   Route::get('/cidade/',[CidadeController::class,'index'])->name('todos');

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ServidorEfetivo extends Model
 {
     protected $fillable = [
+        'pes_id',
         'se_matricula',
     ];
     protected $table = 'servidor_efetivo';

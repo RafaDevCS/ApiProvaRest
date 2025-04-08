@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Unidade;
+use App\Models\Cidade;
 use App\Models\Endereco;
 use App\Models\UnidadeEndereco;
 use Illuminate\Support\Facades\DB;
@@ -44,7 +45,8 @@ class UnidadeEnderecoController extends Controller
                 'end_logradouro' => 'required|max:200|String',
                 'end_numero' => 'required|Integer',
                 'end_bairro'=> 'required|max:100|String',
-                'cid_id' => 'required|exists:cidade,cid_id',
+                'cid_nome' => 'required|max:200',
+                'cid_uf' => 'required|max:2',
             ]);
 
             if($validateUnidadeEnd->fails()){
@@ -60,12 +62,17 @@ class UnidadeEnderecoController extends Controller
                 'unid_sigla' => $request->unid_sigla,
             ]);
 
+            $cidade = Cidade::create([
+                'cid_nome' => $request->cid_nome,
+                'cid_uf' => $request->cid_uf,
+            ]);
+
             $endereco = Endereco::create([
                 'end_tipo_logradouro' => $request->end_tipo_logradouro,
                 'end_logradouro' => $request->end_logradouro,
                 'end_numero' => $request->end_numero,
                 'end_bairro'=> $request->end_bairro,
-                'cid_id' => $request->cid_id
+                'cid_id' => $cidade->cid_id,
             ]);
 
             $unidaEnd = UnidadeEndereco::create([

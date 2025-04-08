@@ -59,7 +59,7 @@ class PessoaController extends Controller
             'pes_pai' => $request->pes_pai,
             ]);
             return response()->json([
-                "message" => "Pessoa criada com sucesso"
+                $pessoa
             ], 201);
 
         }catch (\Throwable $th) {
