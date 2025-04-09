@@ -8,14 +8,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\HasApiTokens;
+
 
 class AuthController extends Controller
 {
-    /**
-     * Create User
-     * @param Request $request
-     * @return User 
-     */
+    use HasApiTokens;
+    
     public function createUser(Request $request)
     {
         try {
@@ -43,8 +42,10 @@ class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Usuário Criado com Sucesso',
-                'token' => $user->createToken("API TOKEN", ['*'], now()->addminutes(5)
+                'mensage' => 'Usuário Criado com Sucesso',
+                'token:Acesso' => $user->createToken("TOKEN", ['acesso'], now()->addminutes(5)
+                )->plainTextToken,
+                'token:Admin' => $user->createToken("TOKEN", ['admin'], now()->addDays(7)
                 )->plainTextToken
             ], 200);
 
@@ -56,51 +57,44 @@ class AuthController extends Controller
         }
     }
 
-    public function renovarToken(Request $request)
+    public function renovarToken()
     {
-        try {
-            $validateUser = Validator::make($request->all(), 
-            [
-                'email' => 'required|email',
-                'password' => 'required'
-            ]);
-
-            if($validateUser->fails()){
-                return response()->json([
-                    'status' => false,
-                    'message' => 'validation error',
-                    'errors' => $validateUser->errors()
-                ], 401);
-            }
-
-            if(!Auth::attempt($request->only(['email', 'password']))){
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Email & Password does not match with our record.',
-                ], 401);
-            }
-
-            $request->user()->tokens()->delete();
-            $user = User::find($request->user()->id);
-            $token = $user->createToken("API TOKEN", ['*'], now()->addminutes(5)
-                )->plainTextToken
-            return response()->json(['token' => $token]);
-
-            
-
-            return response()->json([
-                'status' => 'successo',
-                'message' => 'Sua chave foi renovada',
-                'token' => $token
-            ], 200);
-
-            
-        } catch (\Throwable $th) {
+        if(!$user = Auth::user()){
             return response()->json([
                 'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
+                'message' => 'Usuário não logado',
+            ], 401);
         }
+        
+        if($id){
+            return response()->json([$id]);
+        }
+        return response()->json([
+            'status' => 'successo',
+            'message' => 'Sua chave foi renovada',
+            'token:Acesso' => $user->createToken("TOKEN", ['acesso'], now()->addminutes(5)
+            )->plainTextToken
+        ], 200);
+
+    }
+    public function renovarTokenId($id)
+    {
+        if(!$user = Auth::user()){
+            return response()->json([
+                'status' => false,
+                'message' => 'Usuário não logado',
+            ], 401);
+        }
+        
+        $user = Auth::user();
+        $user->tokens()->where('id', $id)->delete();
+        return response()->json([
+            'status' => 'successo',
+            'message' => 'Sua nova chave foi registrada',
+            'token:Acesso' => $user->createToken("TOKEN", ['acesso'], now()->addminutes(5)
+            )->plainTextToken
+        ], 200);
+
     }
     
     /**
@@ -128,7 +122,7 @@ class AuthController extends Controller
             if(!Auth::attempt($request->only(['email', 'password']))){
                 return response()->json([
                     'status' => false,
-                    'message' => 'Email & Password does not match with our record.',
+                    'message' => 'Email & Password não encontrado',
                 ], 401);
             }
 

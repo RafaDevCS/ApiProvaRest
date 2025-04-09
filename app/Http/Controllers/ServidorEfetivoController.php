@@ -105,13 +105,23 @@ class ServidorEfetivoController extends Controller
                 'se_matricula' => $request->se_matricula,
             ]);
 
-            $lotacao = Lotacao::create([
-                'pes_id' => $pessoa->pes_id,
-                'unid_id' => $request->unid_id,
-                'lot_data_lotacao' => Carbon::parse($request->lot_data_lotacao)->toDateString(),
-                'lot_data_remocao'=> Carbon::parse($request->lot_data_remocao)->toDateString(),
-                'lot_portaria' => $request->lot_portaria
-            ]);
+            if(!empty($request->lot_data_remocao)){
+                $lotacao = Lotacao::create([
+                    'pes_id' => $pessoa->pes_id,
+                    'unid_id' => $request->unid_id,
+                    'lot_data_lotacao' => Carbon::parse($request->lot_data_lotacao)->toDateString(),
+                    'lot_data_remocao'=> Carbon::parse($request->lot_data_remocao)->toDateString(),
+                    'lot_portaria' => $request->lot_portaria
+                ]);
+            }else{
+               $lotacao = Lotacao::create([
+                    'pes_id' => $pessoa->pes_id,
+                    'unid_id' => $request->unid_id,
+                    'lot_data_lotacao' => Carbon::parse($request->lot_data_lotacao)->toDateString(),
+                    'lot_portaria' => $request->lot_portaria
+                ]); 
+            }   
+
 
             $cidade = Cidade::create([
                 'cid_nome' => $request->cid_nome,
@@ -149,8 +159,6 @@ class ServidorEfetivoController extends Controller
      */
     public function show($id)
     {
-        $unidade = DB::table('unidade')->where('unid_id', $id)->first();
-        
         $servidorEfetivo = DB::table('pessoa')
             ->join('servidor_efetivo', 'servidor_efetivo.pes_id', '=', 'pessoa.pes_id')
             ->join('lotacao', 'lotacao.pes_id', '=', 'pessoa.pes_id' )
@@ -169,8 +177,6 @@ class ServidorEfetivoController extends Controller
 
     public function buscarPorUnidade($id)
     {
-        $unidade = DB::table('unidade')->where('unid_id', $id)->first();
-        
         $servidorEfetivo = DB::table('pessoa')
             ->join('servidor_efetivo', 'servidor_efetivo.pes_id', '=', 'pessoa.pes_id')
             ->join('lotacao', 'lotacao.pes_id', '=', 'pessoa.pes_id' )
@@ -201,7 +207,6 @@ class ServidorEfetivoController extends Controller
                       'endereco.end_logradouro AS Logradouro', 'endereco.end_numero AS Numero', 'endereco.end_bairro AS Bairro','cidade.cid_nome AS Cidade', 'cidade.cid_uf AS Estado')
             ->paginate(10);
         
-        //$servidores = ServidorEfetivo::find($pessoa->pes_id)->get();
         return response()->json(['Endereço Funcional' => $pessoa]);
     }
 
@@ -265,13 +270,22 @@ class ServidorEfetivoController extends Controller
             ]);
 
             $lotacao = Lotacao::firstWhere('pes_id', $servidor->pes_id);
-            $lotacao -> update([
-                'pes_id' => $pessoa->pes_id,
-                'unid_id' => $request->unid_id,
-                'lot_data_lotacao' => Carbon::parse($request->lot_data_lotacao)->toDateString(),
-                'lot_data_remocao'=> Carbon::parse($request->lot_data_remocao)->toDateString(),
-                'lot_portaria' => $request->lot_portaria
-            ]);
+            if(!empty($request->lot_data_remocao)){
+                $lotacao -> update([
+                    'pes_id' => $pessoa->pes_id,
+                    'unid_id' => $request->unid_id,
+                    'lot_data_lotacao' => Carbon::parse($request->lot_data_lotacao)->toDateString(),
+                    'lot_data_remocao'=> Carbon::parse($request->lot_data_remocao)->toDateString(),
+                    'lot_portaria' => $request->lot_portaria
+                ]);
+            }else{
+               $lotacao -> update([
+                    'pes_id' => $pessoa->pes_id,
+                    'unid_id' => $request->unid_id,
+                    'lot_data_lotacao' => Carbon::parse($request->lot_data_lotacao)->toDateString(),
+                    'lot_portaria' => $request->lot_portaria
+                ]); 
+            }   
 
             $pessoaEnd = PessoaEndereco::firstWhere('pes_id', $servidor->pes_id);
             $endereco = Endereco::findOrFail($pessoaEnd->end_id);
