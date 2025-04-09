@@ -20,8 +20,8 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
 Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
   
-  Route::post('/auth/renovarToken', [AuthController::class, 'renovarToken'])->name('renovar');
-  Route::post('/auth/renovarToken/{id}', [AuthController::class, 'renovarTokenId'])->name('renovarId');
+  Route::get('/auth/renovarToken', [AuthController::class, 'renovarToken'])->name('renovar');
+  Route::get('/auth/renovarToken/{id}', [AuthController::class, 'renovarTokenId'])->name('renovarId');
 });
 
 
@@ -33,11 +33,11 @@ Route::middleware(['auth:sanctum', 'abilities:acesso'])->group(function () {
   Route::get('/unidade/deleta/{id}',[UnidadeEnderecoController::class,'deleta'])->name('apagaUnidade');
 
   
-  Route::post('/fotoPessoa/novo',[FotoPessoaEnderecoController::class,'store'])->name('cria');
-  Route::get('/fotoPessoa/{id}',[FotoPessoaEnderecoController::class,'show'])->name('busca');
-  Route::get('/fotoPessoa/',[FotoPessoaEnderecoController::class,'index'])->name('todos');
-  Route::put('/fotoPessoa/atualiza/{id}',[FotoPessoaEnderecoController::class,'update'])->name('altera');
-  Route::get('/fotoPessoa/deleta/{id}',[FotoPessoaEnderecoController::class,'deleta'])->name('apaga');
+  Route::post('/fotoPessoa/novo',[FotoPessoaController::class,'store'])->name('cria');
+  Route::get('/fotoPessoa/{id}',[FotoPessoaController::class,'show'])->name('busca');
+  Route::get('/fotoPessoa/',[FotoPessoaController::class,'index'])->name('todos');
+  Route::put('/fotoPessoa/atualiza/{id}',[FotoPessoaController::class,'update'])->name('altera');
+  Route::get('/fotoPessoa/deleta/{id}',[FotoPessoaController::class,'deleta'])->name('apaga');
 
   Route::post('/lotacao/novo',[LotacaoController::class,'store'])->name('cria');
   Route::get('/lotacao/{id}',[LotacaoController::class,'show'])->name('busca');
