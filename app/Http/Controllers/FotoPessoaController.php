@@ -7,6 +7,7 @@ use App\Models\Pessoa;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Validation\Rule;
@@ -34,6 +35,18 @@ class FotoPessoaController extends Controller
     public function store(Request $request)
     {
         try {
+            $request->validate([
+                'arq' => 'required|image',
+            ]);
+            $request->arq->store('.');
+            $imagesUrl = Storage::disk('s3')->allFiles('');
+            $i = 0;
+            foreach($imagesUrl as $url){
+                $urlImg[$i] = Storage::disk('s3')->url($url);
+                $i++;
+            }
+            return response()->json([$urlImg]);
+
             $validateFP = Validator::make($request->all(), 
             [
                 'pes_id' => 'required|exists:pessoa,pes_id',

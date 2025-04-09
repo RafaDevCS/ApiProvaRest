@@ -15,21 +15,17 @@ use App\Http\Controllers\ServidorTemporarioController;
 use App\Http\Controllers\ServidorEfetivoController;
 
 
-Route::post('/auth/register', [AuthController::class, 'createUser']);
+Route::post('/auth/registra', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::post('/auth/renovarToken', [AuthController::class, 'renovarToken']);
-Route::post('/auth/verTokens', [AuthController::class, 'verTokens']);
 
-Route::post('/pessoa/novo',[PessoaController::class,'store'])
-  ->middleware('auth:sanctum');
-Route::get('/pessoa/{id}',[PessoaController::class,'show'])
-  ->middleware('auth:sanctum');
-Route::get('/pessoa/',[PessoaController::class,'index'])
-  ->middleware('auth:sanctum');
-Route::put('/pessoa/atualiza/{id}',[PessoaController::class,'update'])
-  ->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->group(function () {
+  Route::post('/pessoa/novo',[PessoaController::class,'store'])->name('cria');
+  Route::get('/pessoa/{id}',[PessoaController::class,'show'])->name('busca');
+  Route::get('/pessoa/',[PessoaController::class,'index'])->name('todos');
+  Route::put('/pessoa/atualiza/{id}',[PessoaController::class,'update'])->name('altera');
+
   Route::post('/unidade/novo',[UnidadeController::class,'store'])->name('cria');
   Route::get('/unidade/{id}',[UnidadeController::class,'show'])->name('busca');
   Route::get('/unidade/',[UnidadeController::class,'index'])->name('todos');
