@@ -122,4 +122,10 @@ curl --location 'http://0.0.0.0:80/api/servidorTemporario/novo' \
 --form 'st_data_admissao="09-04-2025"' \
 --form 'arq=@"/C:/Users/DevRafael/Downloads/images.jpg"'
 
+PARA INSERIR UMA FOTO
 
+curl --location 'http://0.0.0.0:80/api/fotoPessoa/novo' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer 2|PjstuZU2paaFrTrvOXyHz1WiGPHag2kub7oSOzrX53b643b9' \
+--form 'pes_id="1"' \
+--form 'arq=@"/C:/Users/DevRafael/Downloads/images.jpg"'
