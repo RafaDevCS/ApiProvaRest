@@ -64,6 +64,8 @@ curl --location 'http://0.0.0.0:80/api/auth/renovarToken/' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer 2|cxEX6JwfdiDRdmcodjU02wWDsdio75tlHX3ap9uucbf4a237'
 
+INSIRA SERVIDOR EFETIVO
+
 curl --location 'http://0.0.0.0:80/api/servidorEfetivo/novo' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer 15|DsWdlE9OtJIhfT0Cr00Vq5Kx7kMuc9UghdlvnngW6983a799' \
