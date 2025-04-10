@@ -18,9 +18,7 @@ Execute o comando para iniciar a aplicação, banco de dados e servidor MinIO:
 
 ./vendor/bin/sail up -d
 
-Execute o comando para gerar o banco de dados:
-
-alter o arquivo copia.env.txt para .env
+Antes de Executar o comando para gerar o banco de dados, altere o arquivo copia.env.txt para .env:
 
 ./vendor/bin/sail artisan migrate
 
