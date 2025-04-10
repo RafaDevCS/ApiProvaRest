@@ -30,18 +30,13 @@ mc mb myminio/local
 
 mc policy set public myminio/local
 
-Para todas as requisições insira no cabeçalho:
+No postman, faça as requisições:
 
-Accept:application/json
-
-Envie uma requisição POST 
-http://0.0.0.0:80/api/auth/registra
-
-->form-data
-
-name:user
-email:user@mail.com
-password:12345678
+curl --location 'http://0.0.0.0:80/api/auth/registra' \
+--header 'Accept: application/json' \
+--form 'name="usuario"' \
+--form 'email="usuario@mail.com"' \
+--form 'password="12345678"'
 
 Utilize a chave de 'acesso' para inserir uma nova unidade:
 
@@ -74,7 +69,7 @@ http://0.0.0.0:80/api/auth/renovarToken/{tokenId}
 ou
 http://0.0.0.0:80/api/auth/renovarToken/
 
-Ultilize Autorização por token. e insira o token de 'admin' recebido no regitro.
+Ultilize Autorização por token. e insira o token de 'admin' recebido no registro.
 
 
 curl --location 'http://0.0.0.0:80/api/servidorEfetivo/novo' \
