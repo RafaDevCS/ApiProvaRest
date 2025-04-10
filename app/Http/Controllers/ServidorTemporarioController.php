@@ -80,6 +80,7 @@ class ServidorTemporarioController extends Controller
                 'st_data_demissao' => ['nullable', 'date', 
                     Rule::date()->after(today()),
                 ],
+                'arq' => 'required|image',
             ]);
 
             if($validateServidor->fails()){
@@ -98,11 +99,12 @@ class ServidorTemporarioController extends Controller
             'pes_pai' => $request->pes_pai,
             ]);
 
-            $FotoPessoa = FotoPessoa::create([
+            $img = $request->arq->store('.');
+            $fotoPessoa = FotoPessoa::create([
                 'pes_id' => $pessoa->pes_id,
-                'ft_data' => Carbon::parse($request->ft_data)->toDateString(),
-                'ft_bucket'=> $request->ft_bucket,
-                'ft_hash' => $request->ft_hash,
+                'ft_data' => Carbon::now()->toDateString(),
+                'ft_bucket'=> 'local',
+                'ft_hash' => $img
             ]);
 
             if(!empty($request->st_data_demissao)){
@@ -250,9 +252,6 @@ class ServidorTemporarioController extends Controller
                 'end_bairro'=> 'required|max:100|String',
                 'cid_nome' => 'required|max:200',
                 'cid_uf' => 'required|max:2',
-                'ft_data' => 'required|date',
-                'ft_bucket'=> 'required|max:50',
-                'ft_hash' => 'required|max:50',
                 'st_data_admissao' => ['required', 'date', 
                     Rule::date()->beforeOrEqual(today()),
                 ],
@@ -290,14 +289,6 @@ class ServidorTemporarioController extends Controller
             'pes_sexo' => $request->pes_sexo,
             'pes_mae' => $request->pes_mae,
             'pes_pai' => $request->pes_pai,
-            ]);
-
-            $fotoPessoa = FotoPessoa::firstWhere('pes_id', $servidor->pes_id);
-            $fotoPessoa -> update([
-                'pes_id' => $pessoa->pes_id,
-                'ft_data' => Carbon::parse($request->ft_data)->toDateString(),
-                'ft_bucket'=> $request->ft_bucket,
-                'ft_hash' => $request->ft_hash,
             ]);
 
             $lotacao = Lotacao::firstWhere('pes_id', $servidor->pes_id);

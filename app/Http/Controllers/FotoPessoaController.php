@@ -35,24 +35,10 @@ class FotoPessoaController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
-                'arq' => 'required|image',
-            ]);
-            $request->arq->store('.');
-            $imagesUrl = Storage::disk('s3')->allFiles('');
-            $i = 0;
-            foreach($imagesUrl as $url){
-                $urlImg[$i] = Storage::disk('s3')->url($url);
-                $i++;
-            }
-            return response()->json([$urlImg]);
-
             $validateFP = Validator::make($request->all(), 
             [
                 'pes_id' => 'required|exists:pessoa,pes_id',
-                'ft_data' => 'required|date',
-                'ft_bucket'=> 'required|max:50',
-                'ft_hash' => 'required|max:50',
+                'arq' => 'required|image',
                 
             ]);
 
@@ -64,16 +50,26 @@ class FotoPessoaController extends Controller
                 ], 401);
             }
 
+            $img = $request->arq->store('.');
 
-            $FotoPessoa = FotoPessoa::create([
+            /*$imagesUrl = Storage::disk('s3')->allFiles('');
+            return response()->json([$imagesUrl]);
+            $i = 0;
+            foreach($imagesUrl as $url){
+                $urlImg[$i] = Storage::disk('s3')->url($url);
+                $i++;
+            }
+            return response()->json([$urlImg]);*/
+
+            $fotoPessoa = FotoPessoa::create([
                 'pes_id' => $request->pes_id,
-                'ft_data' => Carbon::parse($request->ft_data)->toDateString(),
-                'ft_bucket'=> $request->ft_bucket,
-                'ft_hash' => $request->ft_hash
+                'ft_data' => Carbon::now()->toDateString(),
+                'ft_bucket'=> 'local',
+                'ft_hash' => $img
             ]);
 
             return response()->json([
-                "message" => "Foto criada com sucesso"
+                "message" => "Foto criada com sucesso",
             ], 201);
 
         }catch (\Throwable $th) {

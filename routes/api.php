@@ -20,7 +20,7 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 
 Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
   
-  Route::get('/auth/renovarToken', [AuthController::class, 'renovarToken'])->name('renovar');
+  Route::get('/auth/renovarToken/', [AuthController::class, 'renovarToken'])->name('renovar');
   Route::get('/auth/renovarToken/{id}', [AuthController::class, 'renovarTokenId'])->name('renovarId');
 });
 

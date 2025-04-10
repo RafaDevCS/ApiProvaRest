@@ -66,9 +66,6 @@ class AuthController extends Controller
             ], 401);
         }
         
-        if($id){
-            return response()->json([$id]);
-        }
         return response()->json([
             'status' => 'successo',
             'message' => 'Sua chave foi renovada',
